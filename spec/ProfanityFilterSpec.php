@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\LinkThrow\ProfanityFilter;
+namespace spec\Sworup\ProfanityFilter;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -16,7 +16,7 @@ class ProfanityFilterSpec extends ObjectBehavior
     }
     function it_is_initializable()
     {
-        $this->shouldHaveType('LinkThrow\ProfanityFilter\ProfanityFilter');
+        $this->shouldHaveType('Sworup\ProfanityFilter\ProfanityFilter');
     }
 
 
