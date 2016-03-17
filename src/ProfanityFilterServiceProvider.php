@@ -1,6 +1,6 @@
 <?php
 
-namespace LinkThrow\ProfanityFilter;
+namespace Sworup\ProfanityFilter;
 
 use Illuminate\Support\ServiceProvider;
 
