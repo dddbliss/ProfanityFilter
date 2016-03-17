@@ -1,6 +1,6 @@
 <?php
 
-namespace Sworup\ProfanityFilter;
+namespace LinkThrow\ProfanityFilter;
 
 class ProfanityFilter
 {
@@ -21,21 +21,26 @@ class ProfanityFilter
 
         $newstring = $this->checkForBadWordsAnywhere($string, $censorChar);
         $newstring = $this->checkForBlackListedWords($newstring, $censorChar);
-                
+
         return $this->createOutputObject($string, $newstring);
     }
 
     private function checkForBadWordsAnywhere($string, $censorChar)
     {
         $replace   = $this->replace;
-        $badwords  = $this->swearWords;
-        $total_badwords = count($badwords);
-        $replacement = array();
-        for ($x = 0; $x < $total_badwords; $x++) {
-            $replacement[$x] = str_repeat($censorChar, strlen($badwords[$x]));
-            $badwords[$x] = '/' . str_ireplace(array_keys($replace), array_values($replace), $badwords[$x]) . '/i';
+
+        $returnString = $string;
+        $badwordsInEveryLanguage  = $this->swearWords;
+
+        foreach ($badwordsInEveryLanguage as $badwords) {
+            foreach ($badwords as $badword) {
+                if (strpos($returnString, $badword) !== false) {
+                    $censoredString = str_repeat($censorChar, strlen($badword));
+                    $returnString = str_replace($badword, $censoredString, $returnString);
+                }
+            }
         }
-        return preg_replace($badwords, $replacement, $string);
+        return $returnString;
     }
 
     private function checkForBlackListedWords($string, $censorChar)
@@ -57,7 +62,7 @@ class ProfanityFilter
                     $regex_ready_word .= "\W*".str_ireplace(array_keys($replace), array_values($replace), $letter);
                 }
             }
-            
+
             $blackList[$i] ="#\b$regex_ready_word\b#i";
         }
         return preg_replace($blackList, $replacement, $string);
@@ -69,8 +74,8 @@ class ProfanityFilter
             'old_string' => $string,
             'new_string' => $new_string,
             'clean'      => ($string === $new_string) ? true : false
-            );
+        );
     }
 
-    
+
 }
