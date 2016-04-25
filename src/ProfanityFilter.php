@@ -72,7 +72,7 @@ class ProfanityFilter
         return array(
             'old_string' => $string,
             'new_string' => $new_string,
-            'clean'      => ($string === $new_string) ? true : false
+            'clean'      => (strtolower($string) === $new_string) ? true : false
             );
     }
 
