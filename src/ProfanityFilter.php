@@ -27,15 +27,19 @@ class ProfanityFilter
 
     private function checkForBadWordsAnywhere($string, $censorChar)
     {
+        $string = strtolower($string);
         $replace   = $this->replace;
-        $badwords  = $this->swearWords;
-        $total_badwords = count($badwords);
-        $replacement = array();
-        for ($x = 0; $x < $total_badwords; $x++) {
-            $replacement[$x] = str_repeat($censorChar, strlen($badwords[$x]));
-            $badwords[$x] = '/' . str_ireplace(array_keys($replace), array_values($replace), $badwords[$x]) . '/i';
+        $returnString = $string;
+        $badwordsInEveryLanguage = $this->swearWords;
+        foreach ($badwordsInEveryLanguage as $badword) {
+
+                if (strpos($returnString, $badword) !== false) {
+                    $censoredString = str_repeat($censorChar, strlen($badword));
+                    $returnString = str_replace($badword, $censoredString, $returnString);
+                }
+
         }
-        return preg_replace($badwords, $replacement, $string);
+        return $returnString;
     }
 
     private function checkForBlackListedWords($string, $censorChar)
